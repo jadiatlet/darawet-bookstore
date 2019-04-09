@@ -8,13 +8,12 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(
-  `mongodb+srv://${process.env.DB_DEV_USERNAME}:${process.env.DB_DEV_PASSWORD}@cluster0-bhbnw.mongodb.net/test?retryWrites=true`,
-  { useNewUrlParser: true },
-  () => {
-    console.log("DATABASE CONNECTED");
-  }
-);
+const mongoDb =
+  "mongodb+srv://admin:<password>@cluster0-bhbnw.mongodb.net/test?retryWrites=true";
+mongoose.connect(mongoDb, { useNewUrlParser: true });
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "MongoDbConnection Error"));
 
 app.get("/", (req, res) => {
   res.send("BOOKS IS OKE");
